@@ -1,0 +1,14 @@
+{
+  "name": "ai-coding-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "Local AI coding agent with a GUI - free, on your machine",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.2"
+  }
+}

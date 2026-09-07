@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Coding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">◆</div>
+        <div class="brand-text">
+          <div class="brand-title">AI Coding</div>
+          <div class="brand-sub" id="modelBadge">loading…</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <div class="folder">
+          <span class="folder-icon">📁</span>
+          <input id="cwdInput" class="cwd-input" placeholder="working folder…" spellcheck="false" />
+          <button id="cwdBtn" class="btn-ghost" title="Set working folder">Set</button>
+        </div>
+        <button id="newChatBtn" class="btn-ghost">＋ New chat</button>
+      </div>
+    </header>
+
+    <main id="messages" class="messages">
+      <div class="welcome">
+        <div class="welcome-logo">◆</div>
+        <h1>What are we building?</h1>
+        <p>I can read and edit files, run commands, and work through tasks in your folder — free, on your machine.</p>
+        <div class="chips">
+          <button class="chip" data-prompt="List the files in the current folder and tell me what's here.">List the files here</button>
+          <button class="chip" data-prompt="Create a file called hello.js that prints a friendly message, then run it.">Create &amp; run hello.js</button>
+          <button class="chip" data-prompt="Make a simple index.html landing page with a nice hero section.">Build a landing page</button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="composer">
+      <div class="composer-inner">
+        <textarea id="input" rows="1" placeholder="Ask me to build, fix, or run something…" spellcheck="false"></textarea>
+        <button id="sendBtn" class="send" title="Send (Enter)">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M3.4 20.4l17.45-7.48a1 1 0 000-1.84L3.4 3.6a.993.993 0 00-1.39.91L2 9.12c0 .5.37.93.87.99L17 12 2.87 13.88c-.5.07-.87.5-.87 1l.01 4.61c0 .71.73 1.2 1.39.91z"/></svg>
+        </button>
+      </div>
+      <div class="composer-hint"><span id="statusHint">Enter to send · Shift+Enter for newline</span></div>
+    </footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
