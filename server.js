@@ -8,23 +8,33 @@ const { exec } = require("child_process");
 
 // ---------- Load config from ~/.qwen/.env (reuses the key you already saved) ----------
 function loadEnv() {
-  const envPath = path.join(os.homedir(), ".qwen", ".env");
+  const candidates = [
+    path.join(__dirname, ".env"),
+    path.join(os.homedir(), ".qwen", ".env")
+  ];
   const cfg = {};
-  try {
-    const raw = fs.readFileSync(envPath, "utf8");
-    for (const line of raw.split(/\r?\n/)) {
-      const m = line.match(/^\s*([A-Z_]+)\s*=\s*(.*)\s*$/);
-      if (m && !line.trim().startsWith("#")) cfg[m[1]] = m[2].trim();
+  for (const envPath of candidates) {
+    if (fs.existsSync(envPath)) {
+      try {
+        const raw = fs.readFileSync(envPath, "utf8");
+        for (const line of raw.split(/\r?\n/)) {
+          const m = line.match(/^\s*([A-Za-z0-9_]+)\s*=\s*(.*)\s*$/);
+          if (m && !line.trim().startsWith("#")) {
+            const val = m[2].trim().replace(/^["']|["']$/g, "");
+            if (!cfg[m[1]]) cfg[m[1]] = val;
+          }
+        }
+      } catch (e) {
+        console.error("Could not read " + envPath + ":", e.message);
+      }
     }
-  } catch (e) {
-    console.error("Could not read ~/.qwen/.env:", e.message);
   }
   return cfg;
 }
 const ENV = loadEnv();
-const API_KEY = ENV.OPENAI_API_KEY || "";
-const BASE_URL = (ENV.OPENAI_BASE_URL || "https://openrouter.ai/api/v1").replace(/\/$/, "");
-const MODEL = ENV.OPENAI_MODEL || "minimax/minimax-m3:free";
+const API_KEY = process.env.OPENAI_API_KEY || ENV.OPENAI_API_KEY || "";
+const BASE_URL = (process.env.OPENAI_BASE_URL || ENV.OPENAI_BASE_URL || "https://openrouter.ai/api/v1").replace(/\/$/, "");
+const MODEL = process.env.OPENAI_MODEL || ENV.OPENAI_MODEL || "minimax/minimax-m3:free";
 
 // ---------- State ----------
 const DEFAULT_CWD = path.join(__dirname, "workspace");
