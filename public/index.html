@@ -26,6 +26,8 @@
           <input id="cwdInput" class="cwd-input" placeholder="working folder…" spellcheck="false" />
           <button id="cwdBtn" class="btn-ghost" title="Set working folder">Set</button>
         </div>
+        <select id="engineSelect" class="engine-select" title="Which AI does the work"></select>
+        <button id="antigravityBtn" class="btn-ghost" title="Open the working folder in Antigravity">Open in Antigravity</button>
         <button id="newChatBtn" class="btn-ghost">＋ New chat</button>
       </div>
     </header>
@@ -46,6 +48,7 @@
     <footer class="composer">
       <div class="composer-inner">
         <textarea id="input" rows="1" placeholder="Ask me to build, fix, or run something…" spellcheck="false"></textarea>
+        <button id="stopBtn" class="stop" title="Stop the running task" hidden>■ Stop</button>
         <button id="sendBtn" class="send" title="Send (Enter)">
           <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M3.4 20.4l17.45-7.48a1 1 0 000-1.84L3.4 3.6a.993.993 0 00-1.39.91L2 9.12c0 .5.37.93.87.99L17 12 2.87 13.88c-.5.07-.87.5-.87 1l.01 4.61c0 .71.73 1.2 1.39.91z"/></svg>
         </button>
