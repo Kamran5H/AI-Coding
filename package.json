@@ -1,14 +1,18 @@
 {
   "name": "ai-coding-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "commonjs",
-  "description": "Local AI coding agent with a GUI - free, on your machine",
+  "description": "Local AI coding agent with a GUI: OpenRouter, or your own Claude / ChatGPT / Gemini plans through their official CLIs",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test tests/app.test.js"
   },
   "dependencies": {
     "express": "^4.22.2"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

@@ -20,7 +20,18 @@
 
 **AI-Coding** is a sovereign, local developer agent engineered in JavaScript and Node.js. It bridges the gap between cloud LLMs and your local filesystem, allowing the agent to read directories, inspect source code, generate new modules, and refactor existing files while keeping the human developer strictly in control of terminal execution.
 
-With zero cloud lock-in, AI-Coding integrates seamlessly with **OpenRouter**, allowing developers to swap between Claude 3.5 Sonnet, DeepSeek V3, Qwen 2.5 Coder, and GPT-4o with a single environment variable.
+You choose which AI does the work from a menu in the app:
+
+| Engine | Uses | What you need |
+| --- | --- | --- |
+| **Claude** | your Claude plan | the official Claude Code tool: `npm install -g @anthropic-ai/claude-code`, then run `claude` once to sign in |
+| **ChatGPT** | your ChatGPT plan | the official Codex tool: `npm install -g @openai/codex`, then run `codex` once and choose *Sign in with ChatGPT* |
+| **Gemini** | your Google account (the one Antigravity uses) | the official Gemini tool: `npm install -g @google/gemini-cli`, then run `gemini` once to sign in |
+| **OpenRouter** | an API key (free models exist) | `OPENROUTER_API_KEY` in `.env` |
+
+The first three run the vendors' own command-line tools in your working folder and show their progress in the app. Your sign-in stays inside each tool: no password, cookie or token passes through AI-Coding. They are started in their "edit files, do not run commands unasked" mode. What each plan allows (limits, models) is decided by that plan.
+
+**Antigravity** is an editor with no documented way for another program to hand it a task, so the app offers **Open in Antigravity**, which opens the working folder there.
 
 ---
 
@@ -64,6 +75,10 @@ flowchart TD
 ```text
 AI-Coding/
 ├── server.js                   # Express server, agentic loop & tool dispatcher
+├── lib/engines.js              # Claude / ChatGPT / Gemini CLI engines, Antigravity launcher
+├── lib/guard.js                # local-only request guard
+├── tests/                      # node:test suite with stand-in CLI tools
+├── Install Desktop Shortcut.vbs  # creates or repairs the desktop icon
 ├── public/                     # Frontend web GUI, SSE handlers & styling
 ├── HOW-TO-USE.md               # In-depth operator manual and workflow guide
 ├── start-app.cmd               # Quick launcher for Node.js backend
@@ -79,8 +94,8 @@ AI-Coding/
 ## ⚡ Quick Start
 
 ### Prerequisites
-- Node.js 18.0+ or higher
-- An OpenRouter API Key
+- Node.js 18 or newer
+- At least one engine from the table above
 
 ### Setup
 ```bash
@@ -92,12 +107,13 @@ npm install
 ```
 
 ### Configuration
-Create a `.env` file in the root directory:
+Only needed for the OpenRouter engine. Create a `.env` file next to `server.js` (it is git-ignored):
 ```dotenv
 OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-MODEL=anthropic/claude-3.5-sonnet  # or deepseek/deepseek-chat, qwen/qwen-2.5-coder-32b-instruct
-PORT=3000
+MODEL=minimax/minimax-m3:free      # any OpenRouter model id
+PORT=8787                          # optional
 ```
+`OPENAI_API_KEY`, `OPENAI_MODEL` and `OPENAI_BASE_URL` are accepted too (any OpenAI-compatible endpoint), and a key already saved in `~/.qwen/.env` is picked up.
 
 ### Launch
 ```bash
@@ -106,7 +122,20 @@ npm start
 
 # Or double-click start-app.cmd on Windows
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser to start pair programming with your local agent!
+Open [http://localhost:8787](http://localhost:8787).
+
+On Windows, double-click **`Install Desktop Shortcut.vbs`** once to get an *AI Coding* icon on your desktop that starts the app silently.
+
+### Safety
+- The server listens on `127.0.0.1` only and refuses requests from other sites or other devices.
+- File tools cannot leave the working folder, including through links.
+- A shell command runs only after you press **Approve & run**. Closing the tab or pressing **Stop** counts as "no".
+- Model output is cleaned before it is shown, so text copied from a file cannot run script in the page.
+
+### Tests
+```bash
+npm test      # offline; the AI tools are replaced by stand-ins
+```
 
 ---
 

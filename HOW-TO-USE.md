@@ -11,6 +11,19 @@ Double-click **start-app.cmd**.
 
 To stop: close the black server window.
 
+## Pick which AI does the work
+Use the menu at the top. A filled dot (●) means that engine is ready.
+- **Claude** uses your Claude plan through the Claude Code tool.
+- **ChatGPT** uses your ChatGPT plan through the Codex tool.
+- **Gemini** uses your Google account (the one Antigravity uses) through the Gemini tool.
+- **OpenRouter** uses an API key (free models exist).
+
+If an engine shows ○, select it and the line under the message box tells you the one command that installs it.
+After installing, open a terminal, run the tool once (`claude`, `codex` or `gemini`) and sign in.
+
+**Open in Antigravity** opens the current working folder in the Antigravity editor.
+**■ Stop** ends a running task.
+
 ## Using it
 - Type a request and press Enter (Shift+Enter for a new line).
 - The agent works in the **workspace** folder by default. Put files you want it to

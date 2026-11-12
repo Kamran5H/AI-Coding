@@ -1,28 +1,31 @@
-name: CI Quality Gate
+name: CI
 
 on:
   push:
     branches: [ main, master ]
   pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
-  build-and-validate:
-    runs-on: ubuntu-latest
+  test:
+    name: Tests (Node ${{ matrix.node }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: ["18", "20", "22"]
+        include:
+          - os: windows-latest
+            node: "22"
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
-      - name: Validate Package Integrity
-        run: |
-          if [ -f "package.json" ]; then
-            node -e "JSON.parse(require('fs').readFileSync('package.json'))"
-            echo "package.json syntax verified!"
-          fi
-          echo "Node.js workspace validated successfully!"
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - name: Syntax check
+        run: node --check server.js && node --check lib/engines.js && node --check lib/guard.js && node --check public/app.js
+      - name: Tests (offline; the AI tools are replaced by stand-ins)
+        run: npm test
